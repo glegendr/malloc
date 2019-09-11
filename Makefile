@@ -2,11 +2,16 @@
 NAME= a.out
 CC=gcc
 CFLAG=
-CFLAG+= -Werror
-CFLAG+= -Wextra
-CFLAG+= -Wall
+#CFLAG+= -Werror
+#CFLAG+= -Wextra
+#CFLAG+= -Wall
 #CFLAG+= -fsanitize=address
-SRCNAME= main
+SRCNAME= free			\
+		 main			\
+		 malloc			\
+		 realloc		\
+		 random			\
+		 show_alloc_mem	\
 
 LIBS= ./pods/libft/libft.a
 
