@@ -1,16 +1,19 @@
 .PHONY: all re fclean clean
-NAME= a.out
+HOSTTYPE=x86_64_Darwin
+ifeq ($(HOSTTYPE),)
+	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+NAME= libft_malloc_$(HOSTTYPE).so
 CC=gcc
 CFLAG=
-#CFLAG+= -Werror
-#CFLAG+= -Wextra
-#CFLAG+= -Wall
+CFLAG+= -Werror
+CFLAG+= -Wextra
+CFLAG+= -Wall
 #CFLAG+= -fsanitize=address
 SRCNAME= free			\
-		 main			\
 		 malloc			\
 		 realloc		\
-		 random			\
+		 utils			\
 		 show_alloc_mem	\
 
 LIBS= ./pods/libft/libft.a
@@ -31,8 +34,11 @@ OBJ= $(addprefix $(OBJDIR), $(addsuffix .o, $(SRCNAME)))
 all: $(NAME)
 
 $(NAME): $(OBJDIR) $(OBJ) $(LIBS)
-	@$(CC) -o $@ $(OBJ) $(LIBS)
+	@$(CC) -shared $(OBJ) $(LIBS) -o $@
 	@(echo "[ \033[35m$@\033[00m ]")
+	@rm -f libft_malloc.so
+	@ln -s $(NAME) libft_malloc.so
+		
 	
 $(LIBS): libs ;
 

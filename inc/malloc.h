@@ -44,14 +44,23 @@ typedef struct		s_head
 
 t_head *g_malloc;
 
+
+/*
+** memory management functions
+*/
+void				*malloc(size_t size);
+void				*realloc(void *ptr, size_t size);
+void				*calloc(size_t nitems, size_t size);
+void				free(void *ptr);
+
+/*
+** all other utils functions
+*/
 void				head_add(t_head **alst, t_head *new);
 void				mem_add(t_head **alst, t_mem *new);
-void				free(void *ptr);
 t_head				*find_place(size_t size, t_type type);
 void				push_new_mmap(void *ptr, size_t size, t_type type);
 void				*create_list(size_t size, t_head *head);
-void				*malloc(size_t size);
-void				*realloc(void *ptr, size_t size);
 void				show_alloc_mem(void);
 size_t				find_puissance(size_t);
 t_mem				*find_ptr(void *ptr);

@@ -27,7 +27,7 @@ size_t	find_puissance(size_t size)
 	ret = 1;
 	while (ret < size)
 		ret <<= 1;
-	if (ret < getpagesize())
+	if (ret < (size_t)getpagesize())
 		return getpagesize();
 	return (ret);
 }
@@ -44,5 +44,4 @@ void	free(void *ptr)
 	mem->status = FREED;
 	ret = munmap(ptr, find_puissance(mem->size));
 	mem->ptr = NULL;
-	printf("%s\n", ret == -1 ? "FREE_FAILED" : "FREE_SUCCED");
 }
