@@ -71,3 +71,12 @@ void	*calloc(size_t nitems, size_t size)
 	bzero_opti(ret, nitems * size);
 	return (ret);
 }
+
+size_t	malloc_usable_size(void *ptr)
+{
+	t_mem *mem;
+
+	if (!(mem = find_ptr(ptr)))
+		return (0);
+	return (mem->size);
+}
