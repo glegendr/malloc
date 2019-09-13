@@ -25,7 +25,10 @@ void	show_alloc_mem(void)
 
 	total_size = 0;
 	if (!g_malloc) //FAUT DEL PRINTF
+	{
 		printf("No memory has been malloc\n");
+		return ;
+	}
 	tmp = g_malloc;
 	i = 0;
 	while (tmp)
@@ -68,8 +71,5 @@ void	show_alloc_mem(void)
 		}
 		--i;
 	}
-	if (total_size == 0)
-		printf("Everything have been freed\n");
-	else
-		printf("Total : %llu octets\n", total_size);
+	printf("Total : %llu octets\n", total_size);
 }

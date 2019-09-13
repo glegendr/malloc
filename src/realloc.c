@@ -42,20 +42,20 @@ void	*realloc(void *ptr, size_t size)
 void	*bzero_opti(void *s, size_t n)
 {
 	size_t i = 0;
-	size_t z = n / 4;
+	size_t z = n / 8;
 
 	while (i < z)
 	{
-		if (((int *)s)[i] == 0)
-			((int *)s)[i] = 0;
+		if (((uint64_t *)s)[i] == 0)
+			((uint64_t *)s)[i] = 0;
 		++i;
 	}
 	z = 0;
-	n %= 4;
+	n %= 8;
 	while (z < n)
 	{
-		if (((char *)s)[i] == 0)
-			((char *)s)[i] = 0;
+		if (((uint8_t *)s)[i] == 0)
+			((uint8_t *)s)[i] = 0;
 		++i;
 		++z;
 	}

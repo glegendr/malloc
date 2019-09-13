@@ -9,7 +9,7 @@ t_head		*find_place(size_t size, t_type type)
 	head = g_malloc;
 	while (head)
 	{
-		if (head->size_left >= size && type == head->type)
+		if (head->size_left > size && type == head->type)
 			return (head);
 		head = head->next;
 	}

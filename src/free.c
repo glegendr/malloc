@@ -24,11 +24,15 @@ size_t	find_puissance(size_t size)
 {
 	size_t ret;
 
+	if (size == (size_t)-1)
+		return (size);
 	ret = 1;
-	while (ret < size)
+	while (ret <= size && ret != 0)
 		ret <<= 1;
+	if (ret == 0)
+		return (size);
 	if (ret < (size_t)getpagesize())
-		return getpagesize();
+		return (getpagesize());
 	return (ret);
 }
 
