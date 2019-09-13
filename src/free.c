@@ -38,14 +38,34 @@ size_t	find_puissance(size_t size)
 
 void	free(void *ptr)
 {
-	int ret;
 	t_mem	*mem;
+	t_mem	*mem2;
 
 	if (!ptr)
 		return ;
 	if (!(mem = find_ptr(ptr)))
 		return ;
 	mem->status = FREED;
-	ret = munmap(ptr, find_puissance(mem->size));
-	mem->ptr = NULL;
+	if (mem->splited == 1)
+	{
+		if (!(mem2 = find_ptr(ptr + (getpagesize() / 2))))
+		{
+	ptr = (void *)-1;
+	return ;
+		}
+		if (mem2->status == FREED)
+			munmap(ptr, find_puissance(mem->size));
+	}
+	else if (mem->splited == 2)
+	{
+		if (!(mem2 = find_ptr(ptr - (getpagesize() / 2))))
+		{
+	ptr = (void *)-1;
+	return ;
+		}
+		if (mem2->status == FREED)
+			munmap(mem2->ptr, find_puissance(mem->size));
+	}
+	else
+		munmap(ptr, find_puissance(mem->size));
 }

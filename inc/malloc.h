@@ -9,10 +9,10 @@
 
 #define SIZE_MALLOC (4090)
 
-#define TINY_SIZE 256
-#define TINY_PAGE_SIZE getpagesize() * 100
+#define TINY_SIZE 1024
+#define TINY_PAGE_SIZE getpagesize() * 200
 #define SMALL_SIZE 8192
-#define SMALL_PAGE_SIZE SMALL_SIZE * 100
+#define SMALL_PAGE_SIZE SMALL_SIZE * 200
 #define STATUS bool
 #define USED true
 #define FREED false
@@ -27,6 +27,7 @@ typedef enum		e_type
 typedef struct		s_memory
 {
 	void			*ptr;
+	int				splited;
 	size_t			size;
 	STATUS			status;
 	struct s_memory	*next;
@@ -37,6 +38,7 @@ typedef struct		s_head
 	void			*ptr;
 	size_t			size;
 	size_t			size_left;
+	int				splited_nb;
 	t_mem			*mem;
 	t_type			type;
 	struct s_head	*next;
