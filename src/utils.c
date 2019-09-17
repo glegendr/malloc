@@ -46,7 +46,7 @@ void	*create_list(size_t size, t_head *head)
 	mem->status = USED;
 	mem->next = NULL;
 	mem_add(&head, mem);
-	head->size_left -= find_puissance(size);
+	head->size_left -= size;
 	head->len += 1;
 
 	return (ret);

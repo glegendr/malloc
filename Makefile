@@ -1,5 +1,4 @@
 .PHONY: all re fclean clean
-HOSTTYPE=x86_64_Darwin
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif

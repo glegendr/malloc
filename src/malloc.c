@@ -33,10 +33,15 @@ void	*launch_mmap(size_t size, size_t page_size, t_type type)
 
 void	*malloc(size_t size)
 {
+	void *ret;
+
+	write(1, "MALLOC\n", 7);
 	if (size > SMALL_SIZE)
-		return (launch_mmap(size, find_puissance(size), LARGE));
+		ret  = (launch_mmap(size, find_puissance(size), LARGE));
 	else if (size > TINY_SIZE)
-		return (launch_mmap(size, find_puissance(SMALL_PAGE_SIZE), SMALL));
+		ret = (launch_mmap(size, SMALL_PAGE_SIZE, SMALL));
 	else
-		return (launch_mmap(size, find_puissance(TINY_PAGE_SIZE), TINY));
+		ret = (launch_mmap(size, TINY_PAGE_SIZE, TINY));
+	write(1, "END\n", 4);
+	return (ret);
 }

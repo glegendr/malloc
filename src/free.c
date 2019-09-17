@@ -41,11 +41,20 @@ void	free(void *ptr)
 	int ret;
 	t_mem	*mem;
 
+	write(1, "FREE\n", 5);
 	if (!ptr)
+	{
+		write(1, "NULL1\n", 6);
 		return ;
+	}
 	if (!(mem = find_ptr(ptr)))
+	{
+		write(1, "NULL2\n", 6);
 		return ;
-	mem->status = FREED;
-	ret = munmap(ptr, find_puissance(mem->size));
+	}
+	mem->status = FREED; // try to mmunmap the head and all mem if (left_size < type && all_mem->status == FREED)
+	ret = munmap(ptr, mem->size);
+//	printf("%s\n", ret == -1 ? "FREE_FAIL" : "FREE_SUCCESS");
 	mem->ptr = NULL;
+		write(1, "END\n", 4);
 }

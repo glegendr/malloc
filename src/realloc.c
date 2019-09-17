@@ -18,8 +18,14 @@ void	*realloc(void *ptr, size_t size)
 	t_mem	*mem;
 	void	*ret;
 
-	if (!(mem = find_ptr(ptr)))
+	write(1, "REALLOC\n", 7);
+	if (!ptr)
 		return (malloc(size));
+	if (!(mem = find_ptr(ptr)))
+	{
+		write(1, "NULL1\n", 6);
+		return (NULL);
+	}
 	if (size <= mem->size)
 	{
 		mem->size = size;
@@ -31,11 +37,13 @@ void	*realloc(void *ptr, size_t size)
 		return (ptr);
 	}
 	if (!(ret = malloc(size)))
+	{
+		write(1, "NULL1\n", 6);
 		return (NULL);
-	if (!ptr)
-		return (ret);
+	}
 	ft_memcpy(ret, ptr, mem->size);
 	free(ptr);
+	write(1, "END\n", 4);
 	return (ret);
 }
 
@@ -66,9 +74,14 @@ void	*calloc(size_t nitems, size_t size)
 {
 	void *ret;
 
+	write(1, "CALLOC\n", 7);
 	if (!(ret = malloc(nitems * size)))
+	{
+		write(1, "NULL1\n", 6);
 		return (NULL);
+	}
 	bzero_opti(ret, nitems * size);
+	write(1, "END\n", 4);
 	return (ret);
 }
 
