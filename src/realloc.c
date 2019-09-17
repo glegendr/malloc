@@ -19,7 +19,7 @@ void	*realloc(void *ptr, size_t size)
 	void	*ret;
 
 	if (!(mem = find_ptr(ptr)))
-		return (NULL);
+		return (malloc(size));
 	if (size <= mem->size)
 	{
 		mem->size = size;
