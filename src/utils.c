@@ -1,5 +1,33 @@
 #include <malloc.h>
 
+size_t	find_my_type(size_t size)
+{
+	if (size > SMALL_SIZE)
+		return (size);
+	else if (size > TINY_SIZE)
+		return (SMALL_SIZE);
+	return (TINY_SIZE);
+}
+
+t_mem	*is_free_space(t_head *head, size_t size)
+{
+	t_mem *mem;
+
+	mem = head->mem;
+	while (mem)
+	{
+		if (mem->status == FREE && size <= mem->potential_size)
+		{
+//			print("ret mem\n");
+			return (mem);
+		}
+//		print("loop space\n");
+		mem = mem->next;
+	}
+//			print("ret NULL\n");
+	return (NULL);
+}
+
 void	head_add(t_head **alst, t_head *new)
 {
 	new->next = *alst;
@@ -36,6 +64,12 @@ void	*create_list(size_t size, t_head *head)
 	void		*ret;
 	t_mem		*mem;
 
+	if ((mem = is_free_space(head, size)))
+	{
+		mem->status = USED;
+		mem->size = size;
+		return (mem->ptr);
+	}
 	if ((int)((head->len + 1) * sizeof(t_mem) + sizeof(t_head)) < getpagesize())
 		mem = (void *)head + (head->len * sizeof(t_mem) + sizeof(t_head));
 	else
@@ -43,10 +77,11 @@ void	*create_list(size_t size, t_head *head)
 	ret = head->ptr + (head->size - head->size_left);
 	mem->ptr = ret;
 	mem->size = size;
+	mem->potential_size = size;
 	mem->status = USED;
 	mem->next = NULL;
 	mem_add(&head, mem);
-	head->size_left -= find_puissance(size);
+	head->size_left -= size;
 	head->len += 1;
 
 	return (ret);

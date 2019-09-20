@@ -6,16 +6,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <pthread.h>
 
-#define SIZE_MALLOC (4090)
-
-#define TINY_SIZE 256
-#define TINY_PAGE_SIZE getpagesize() * 200
-#define SMALL_SIZE 8192
-#define SMALL_PAGE_SIZE SMALL_SIZE * 200
-#define STATUS bool
-#define USED true
-#define FREED false
+#define TINY_PAGE_SIZE		4096
+#define TINY_SIZE			TINY_PAGE_SIZE / 100
+#define SMALL_PAGE_SIZE		TINY_PAGE_SIZE * 25
+#define SMALL_SIZE			SMALL_PAGE_SIZE / 100
+#define STATUS				int
+#define FREED				0
+#define USED				1
+#define FREE				2
 
 typedef enum		e_type
 {
@@ -28,6 +28,7 @@ typedef struct		s_memory
 {
 	void			*ptr;
 	size_t			size;
+	size_t			potential_size;
 	STATUS			status;
 	struct s_memory	*next;
 }					t_mem;
@@ -45,6 +46,8 @@ typedef struct		s_head
 
 t_head *g_malloc;
 
+
+void				print(char *s);
 
 /*
 ** memory management functions
@@ -66,4 +69,6 @@ void				*create_list(size_t size, t_head *head);
 void				show_alloc_mem(void);
 size_t				find_puissance(size_t);
 t_mem				*find_ptr(void *ptr);
+t_mem				*is_free_space(t_head *head, size_t size);
+size_t				find_my_type(size_t size);
 #endif
