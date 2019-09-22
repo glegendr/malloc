@@ -79,19 +79,19 @@ void	show_mem()
 			else
 				++fd;
 		}
-		print("MEM nb: ");
-		ft_putnbr(y);
-		print(" in: ");
-		ft_putnbr(i);
-		print(" free space: ");
-		ft_putnbr(fr);
-		print(" used space: ");
-		ft_putnbr(us);
-		print(" freed: ");
-		ft_putnbr(fd);
-		print(" Type: ");
-		print(head->type == LARGE ? "LARGE" : head->type == SMALL ? "SMALL" : "TINY");
-		print("\n");
+		//print("MEM nb: ");
+		//ft_putnbr(y);
+		//print(" in: ");
+		//ft_putnbr(i);
+		//print(" free space: ");
+		//ft_putnbr(fr);
+		//print(" used space: ");
+		//ft_putnbr(us);
+		//print(" freed: ");
+		//ft_putnbr(fd);
+		//print(" Type: ");
+		//print(head->type == LARGE ? "LARGE" : head->type == SMALL ? "SMALL" : "TINY");
+		//print("\n");
 	}
 }
 
@@ -138,27 +138,27 @@ void	free(void *ptr)
 	int ret;
 	t_mem	*mem;
 
-	print("free\n");
+//	print("free\n");
 //	show_mem();
 	if (!ptr)
 	{
-		print("end null\n");
+		//print("end null\n");
 		return ;
 	}
 	if (!(mem = find_ptr(ptr)))
 	{
-		print("end mem\n");
+		//print("end mem\n");
 		return ;
 	}
 	if ((find_head(ptr))->type != LARGE && !can_i_free(ptr))
 	{
 		mem->status = FREE;
-		print("end\n");
+		//print("end\n");
 		return ;
 	}
 	mem->status = FREED;
 	del_head(ptr);
 	ret = munmap(ptr, mem->size);
 	ptr = (void *)-1;
-	print("end\n");
+	//print("end\n");
 }

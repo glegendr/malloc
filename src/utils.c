@@ -18,13 +18,13 @@ t_mem	*is_free_space(t_head *head, size_t size)
 	{
 		if (mem->status == FREE && size <= mem->potential_size)
 		{
-//			print("ret mem\n");
+//			//print("ret mem\n");
 			return (mem);
 		}
-//		print("loop space\n");
+//		//print("loop space\n");
 		mem = mem->next;
 	}
-//			print("ret NULL\n");
+//			//print("ret NULL\n");
 	return (NULL);
 }
 
@@ -59,6 +59,8 @@ void	push_new_mmap(void *ptr, size_t size, t_type type)
 	head_add(&g_malloc, head);
 }
 
+#include <libft.h>
+
 void	*create_list(size_t size, t_head *head)
 {
 	void		*ret;
@@ -66,8 +68,14 @@ void	*create_list(size_t size, t_head *head)
 
 	if ((mem = is_free_space(head, size)))
 	{
+//	print("SPACE IS FREE: ");
+	//ft_putnbr(size);
+	//print(" -- ");
+	//ft_putnbr(mem->potential_size);
+//	print("\n");
 		mem->status = USED;
 		mem->size = size;
+		ret = mem->ptr;
 		return (mem->ptr);
 	}
 	if ((int)((head->len + 1) * sizeof(t_mem) + sizeof(t_head)) < getpagesize())
@@ -77,12 +85,19 @@ void	*create_list(size_t size, t_head *head)
 	ret = head->ptr + (head->size - head->size_left);
 	mem->ptr = ret;
 	mem->size = size;
-	mem->potential_size = size;
+	mem->potential_size = size + 16 - size % 16;
 	mem->status = USED;
 	mem->next = NULL;
 	mem_add(&head, mem);
-	head->size_left -= size;
+	head->size_left -= mem->potential_size;
 	head->len += 1;
 
+//	print("SIZE_LEFT: ");
+//	ft_putnbr(head->size_left);
+//	print(" ~ ");
+//	ft_putnbr((int)ret % 16);
+//	print(" -- ");
+//	ft_putnbr((int)ret + mem->potential_size);
+//	print("\n");
 	return (ret);
 }

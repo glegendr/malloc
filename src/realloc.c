@@ -18,7 +18,7 @@ void	*realloc(void *ptr, size_t size)
 	t_mem	*mem;
 	void	*ret;
 
-	print("realloc\n");
+	//print("realloc\n");
 	if (!ptr)
 	{
 		ret = malloc(size);
@@ -31,13 +31,13 @@ void	*realloc(void *ptr, size_t size)
 	if (size <= mem->size)
 	{
 		mem->size = size;
-	print("end\n");
+	//print("end\n");
 		return (ptr);
 	}
 	else if (size <= mem->potential_size)
 	{
 		mem->size = size;
-	print("end\n");
+	//print("end\n");
 		return (ptr);
 	}
 	if (!(ret = malloc(size)))
@@ -50,7 +50,7 @@ void	*realloc(void *ptr, size_t size)
 	}
 	ft_memcpy(ret, ptr, mem->size);
 	free(ptr);
-	print("end\n");
+	//print("end\n");
 	return (ret);
 }
 
@@ -61,7 +61,7 @@ void	*bzero_opti(void *s, size_t n)
 
 	while (i < z)
 	{
-		if (((uint64_t *)s)[i] == 0)
+		if (((uint64_t *)s)[i] != 0)
 			((uint64_t *)s)[i] = 0;
 		++i;
 	}
@@ -69,25 +69,28 @@ void	*bzero_opti(void *s, size_t n)
 	n %= 8;
 	while (z < n)
 	{
-		if (((uint8_t *)s)[i] == 0)
-			((uint8_t *)s)[i] = 0;
-		++i;
+		if (((uint8_t *)s)[z + 8 * i] != 0)
+			((uint8_t *)s)[z + 8 * i] = 0;
 		++z;
 	}
 	return (s);
 }
+#include <libft.h>
 
 void	*calloc(size_t nitems, size_t size)
 {
 	void *ret;
 
-		print("calloc\n");
-	if (!(ret = malloc(nitems * size)))
-	{
+	//ft_putnbr(nitems);
+	//print(" -- ");
+	//ft_putnbr(size);
+		//print(" calloc\n");
+	if (!nitems || !size)
 		return (NULL);
-	}
+	if (!(ret = malloc(nitems * size)))
+		return (NULL);
 	bzero_opti(ret, nitems * size);
-		print("end\n");
+		//print("end\tcalloc\n");
 	return (ret);
 }
 
