@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:10:00 by glegendr          #+#    #+#             */
+/*   Updated: 2019/09/22 18:26:37 by glegendr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 
 size_t	find_my_type(size_t size)
@@ -7,20 +19,6 @@ size_t	find_my_type(size_t size)
 	else if (size > TINY_SIZE)
 		return (SMALL_SIZE);
 	return (TINY_SIZE);
-}
-
-t_mem	*is_free_space(t_head *head, size_t size)
-{
-	t_mem *mem;
-
-	mem = head->mem;
-	while (mem)
-	{
-		if (mem->status == FREE && size <= mem->potential_size)
-			return (mem);
-		mem = mem->next;
-	}
-	return (NULL);
 }
 
 void	head_add(t_head **alst, t_head *new)

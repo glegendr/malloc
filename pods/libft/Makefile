@@ -30,14 +30,15 @@ SRCNAME= ft_abs      \
 		 ft_memmove\
 		 ft_memset\
 		 ft_putendl \
-		 ft_putchar_fd\
 		 ft_putendl_fd \
-		 ft_putnbr_fd\
+		 ft_putchar  \
+		 ft_putchar_fd\
 		 ft_putnbr   \
+		 ft_putnbr_fd\
+		 ft_putpoint\
+		 ft_putstarstr\
 		 ft_putstr   \
 		 ft_putstr_fd\
-		 ft_putstarstr\
-		 ft_putchar  \
 		 ft_sqrt     \
 		 ft_strcmp  \
 		 ft_strlen  \

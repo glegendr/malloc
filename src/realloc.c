@@ -1,17 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   realloc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:10:14 by glegendr          #+#    #+#             */
+/*   Updated: 2019/09/22 18:11:48 by glegendr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
-
-void	*ft_memcpy(void *dst, const void *src, size_t n)
-{
-	size_t i;
-
-	i = 0;
-	while (i < n)
-	{
-		((char*)dst)[i] = ((char *)src)[i];
-		++i;
-	}
-	return (dst);
-}
+#include <libft.h>
 
 void	*realloc(void *ptr, size_t size)
 {

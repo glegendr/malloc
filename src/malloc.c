@@ -1,7 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:10:27 by glegendr          #+#    #+#             */
+/*   Updated: 2019/09/22 18:26:27 by glegendr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 #include <libft.h>
 
-t_head		*find_place(size_t size, t_type type)
+t_mem				*is_free_space(t_head *head, size_t size)
+{
+	t_mem *mem;
+
+	mem = head->mem;
+	while (mem)
+	{
+		if (mem->status == FREE && size <= mem->potential_size)
+			return (mem);
+		mem = mem->next;
+	}
+	return (NULL);
+}
+
+static t_head		*find_place(size_t size, t_type type)
 {
 	t_head *head;
 
@@ -18,7 +44,7 @@ t_head		*find_place(size_t size, t_type type)
 	return (NULL);
 }
 
-void		*launch_mmap(size_t size, size_t page_size, t_type type)
+static void			*launch_mmap(size_t size, size_t page_size, t_type type)
 {
 	void	*ptr;
 
@@ -34,7 +60,7 @@ void		*launch_mmap(size_t size, size_t page_size, t_type type)
 	return (ptr);
 }
 
-void		*malloc(size_t size)
+void				*malloc(size_t size)
 {
 	void *ret;
 

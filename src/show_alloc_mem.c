@@ -1,6 +1,20 @@
-#include <malloc.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   show_alloc_mem.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:09:36 by glegendr          #+#    #+#             */
+/*   Updated: 2019/09/22 18:23:16 by glegendr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-bool	all_freed(t_head *head)
+#include <malloc.h>
+#include <libft.h>
+#define MEM_LENGTH(mem) while(mem) {mem = mem->next; ++y;}
+
+static bool		all_freed(t_head *head)
 {
 	t_mem *mem;
 
@@ -14,28 +28,47 @@ bool	all_freed(t_head *head)
 	return (true);
 }
 
-void	show_alloc_mem(void)
+static char		*str_my_type(t_type type)
 {
-	t_head	*tmp;
-	t_mem	*mem;
-	int		i;
-	int		y;
-	int		z;
-	uint64_t total_size;
+	if (type == LARGE)
+		return ("LARGE");
+	if (type == SMALL)
+		return ("SMALL");
+	return ("TINY");
+}
 
-	total_size = 0;
-	if (!g_malloc) //FAUT DEL PRINTF
+static int		loop2(t_mem *mem, t_head *tmp, int total_size, int y)
+{
+	int z;
+
+	z = 0;
+	MEM_LENGTH(mem);
+	while (y > 0)
 	{
-		printf("No memory has been malloc\n");
-		return ;
+		z = 0;
+		mem = tmp->mem;
+		while (++z < y)
+			mem = mem->next;
+		if (mem->status == USED)
+		{
+			ft_putpoint(mem->ptr);
+			ft_putstr(" - ");
+			ft_putpoint(mem->ptr + mem->size);
+			ft_putstr(" : ");
+			ft_putnbr(mem->size);
+			ft_putstr(" octets\n");
+			total_size += mem->size;
+		}
+		mem = mem->next;
+		--y;
 	}
-	tmp = g_malloc;
-	i = 0;
-	while (tmp)
-	{
-		tmp = tmp->next;
-		++i;
-	}
+	return (total_size);
+}
+
+static int		loop1(int i, int z, int total_size)
+{
+	t_head *tmp;
+
 	while (i > 0)
 	{
 		z = 0;
@@ -47,29 +80,34 @@ void	show_alloc_mem(void)
 			--i;
 			continue ;
 		}
-		printf("%s : %p\n", tmp->type == 2 ? "LARGE" : tmp->type == 1 ? "SMALL" : "TINY", tmp->ptr);
-		mem = tmp->mem;
-		y = 0;
-		while (mem)
-		{
-			mem = mem->next;
-			++y;
-		}
-		while (y > 0)
-		{
-			z = 0;
-			mem = tmp->mem;
-			while (++z < y)
-				mem = mem->next;
-			if (mem->status == USED)
-			{
-				printf("%p - %p : %zu octets\n", mem->ptr, mem->ptr + mem->size, mem->size);
-				total_size += mem->size;
-			}
-			mem = mem->next;
-			--y;
-		}
+		ft_putstr(str_my_type(tmp->type));
+		ft_putstr(" : ");
+		ft_putpoint(tmp->ptr);
+		ft_putchar('\n');
+		total_size += loop2(tmp->mem, tmp, 0, 0);
 		--i;
 	}
-	printf("Total : %llu octets\n", total_size);
+	return (total_size);
+}
+
+void			show_alloc_mem(void)
+{
+	t_head	*tmp;
+	int		i;
+	int		total_size;
+
+	total_size = 0;
+	if (!g_malloc)
+		return (ft_putstr("No memory has been malloc\n"));
+	tmp = g_malloc;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		++i;
+	}
+	total_size = loop1(i, 0, 0);
+	ft_putstr("Total : ");
+	ft_putnbr(total_size);
+	ft_putstr(" octets\n");
 }

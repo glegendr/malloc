@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/09/22 18:10:07 by glegendr          #+#    #+#             */
+/*   Updated: 2019/09/22 18:25:11 by glegendr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 
-t_mem	*find_ptr(void *ptr)
+t_mem			*find_ptr(void *ptr)
 {
 	t_head	*tmp;
 	t_mem	*mem;
@@ -20,7 +32,7 @@ t_mem	*find_ptr(void *ptr)
 	return (NULL);
 }
 
-t_head	*find_head(void *ptr)
+static t_head	*find_head(void *ptr)
 {
 	t_head	*tmp;
 	t_mem	*mem;
@@ -40,23 +52,7 @@ t_head	*find_head(void *ptr)
 	return (NULL);
 }
 
-size_t	find_puissance(size_t size)
-{
-	size_t ret;
-
-	if (size == (size_t)-1)
-		return (size);
-	ret = 1;
-	while (ret <= size && ret != 0)
-		ret <<= 1;
-	if (ret == 0)
-		return (size);
-	if (ret < (size_t)getpagesize())
-		return (getpagesize());
-	return (ret);
-}
-
-void	del_head(void *ptr)
+static void		del_head(void *ptr)
 {
 	t_head *head1;
 	t_head *head2;
@@ -80,7 +76,7 @@ void	del_head(void *ptr)
 	}
 }
 
-bool	can_i_free(void *ptr)
+static bool		can_i_free(void *ptr)
 {
 	t_head	*head;
 	t_mem	*mem;
@@ -96,7 +92,7 @@ bool	can_i_free(void *ptr)
 	return (true);
 }
 
-void	free(void *ptr)
+void			free(void *ptr)
 {
 	int		ret;
 	t_mem	*mem;
