@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:10:07 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/22 18:25:11 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:10:46 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,12 +97,20 @@ void			free(void *ptr)
 	int		ret;
 	t_mem	*mem;
 
+	pthread_mutex_lock(&g_mutex);
 	if (!ptr)
+	{
+		pthread_mutex_unlock(&g_mutex);
 		return ;
+	}
 	if (!(mem = find_ptr(ptr)))
+	{
+		pthread_mutex_unlock(&g_mutex);
 		return ;
+	}
 	if ((find_head(ptr))->type != LARGE && !can_i_free(ptr))
 	{
+		pthread_mutex_unlock(&g_mutex);
 		mem->status = FREE;
 		return ;
 	}
@@ -110,4 +118,5 @@ void			free(void *ptr)
 	del_head(ptr);
 	ret = munmap(ptr, mem->size);
 	ptr = (void *)-1;
+	pthread_mutex_unlock(&g_mutex);
 }

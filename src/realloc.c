@@ -6,14 +6,14 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:10:14 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/22 18:11:48 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:57:58 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 #include <libft.h>
 
-void	*realloc(void *ptr, size_t size)
+void	*launch_realloc(void *ptr, size_t size)
 {
 	t_mem	*mem;
 	void	*ret;
@@ -36,6 +36,16 @@ void	*realloc(void *ptr, size_t size)
 		return (ret);
 	ft_memcpy(ret, ptr, mem->size);
 	free(ptr);
+	return (ret);
+}
+
+void	*realloc(void *ptr, size_t n)
+{
+	void *ret;
+
+	pthread_mutex_lock(&g_mutex);
+	ret = launch_realloc(ptr, n);
+	pthread_mutex_unlock(&g_mutex);
 	return (ret);
 }
 
@@ -67,11 +77,19 @@ void	*calloc(size_t nitems, size_t size)
 {
 	void *ret;
 
+	pthread_mutex_lock(&g_mutex);
 	if (!nitems || !size)
+	{
+		pthread_mutex_unlock(&g_mutex);
 		return (NULL);
+	}
 	if (!(ret = malloc(nitems * size)))
+	{
+		pthread_mutex_unlock(&g_mutex);
 		return (NULL);
+	}
 	bzero_opti(ret, nitems * size);
+	pthread_mutex_unlock(&g_mutex);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:10:27 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/22 18:26:27 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:46:31 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,13 @@ void				*malloc(size_t size)
 {
 	void *ret;
 
+	pthread_mutex_lock(&g_mutex);
 	if (size > SMALL_SIZE)
 		ret = (launch_mmap(size, size, LARGE));
 	else if (size > TINY_SIZE)
 		ret = (launch_mmap(size, SMALL_PAGE_SIZE, SMALL));
 	else
 		ret = (launch_mmap(size, TINY_PAGE_SIZE, TINY));
+	pthread_mutex_unlock(&g_mutex);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:09:36 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/22 18:23:16 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/23 18:55:18 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,13 @@ void			show_alloc_mem(void)
 	int		i;
 	int		total_size;
 
+	pthread_mutex_lock(&g_mutex);
 	total_size = 0;
 	if (!g_malloc)
+	{
+		pthread_mutex_unlock(&g_mutex);
 		return (ft_putstr("No memory has been malloc\n"));
+	}
 	tmp = g_malloc;
 	i = 0;
 	while (tmp)
@@ -110,4 +114,5 @@ void			show_alloc_mem(void)
 	ft_putstr("Total : ");
 	ft_putnbr(total_size);
 	ft_putstr(" octets\n");
+	pthread_mutex_unlock(&g_mutex);
 }

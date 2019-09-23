@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:19:20 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/22 18:23:53 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:24:31 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <sys/mman.h>
 # include <stdbool.h>
 # include <unistd.h>
+# include <pthread.h>
 
 # define TINY_PAGE_SIZE		4096
 # define TINY_SIZE			TINY_PAGE_SIZE / 100
@@ -54,6 +55,7 @@ typedef struct		s_head
 }					t_head;
 
 t_head *g_malloc;
+static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /*
 ** memory management functions
