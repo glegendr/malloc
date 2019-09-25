@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:19:20 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/23 17:24:31 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/25 14:57:10 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 */
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
+void				*reallocf(void *ptr, size_t size);
 void				*calloc(size_t nitems, size_t size);
 void				free(void *ptr);
 size_t				malloc_usable_size(void *ptr);

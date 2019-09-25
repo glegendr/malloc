@@ -6,23 +6,20 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:10:14 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/23 17:57:58 by glegendr         ###   ########.fr       */
+/*   Updated: 2019/09/25 17:33:30 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 #include <libft.h>
 
-void	*launch_realloc(void *ptr, size_t size)
+static void		*launch_realloc(void *ptr, size_t size, bool reaf)
 {
 	t_mem	*mem;
 	void	*ret;
 
 	if (!ptr)
-	{
-		ret = malloc(size);
-		return (ret);
-	}
+		return (malloc(size));
 	if (!(mem = find_ptr(ptr)))
 		return (NULL);
 	if (size <= mem->potential_size)
@@ -31,7 +28,11 @@ void	*launch_realloc(void *ptr, size_t size)
 		return (ptr);
 	}
 	if (!(ret = malloc(size)))
+	{
+		if (reaf)
+			free(ptr);
 		return (NULL);
+	}
 	if (!ptr)
 		return (ret);
 	ft_memcpy(ret, ptr, mem->size);
@@ -39,17 +40,27 @@ void	*launch_realloc(void *ptr, size_t size)
 	return (ret);
 }
 
-void	*realloc(void *ptr, size_t n)
+void			*realloc(void *ptr, size_t n)
 {
 	void *ret;
 
 	pthread_mutex_lock(&g_mutex);
-	ret = launch_realloc(ptr, n);
+	ret = launch_realloc(ptr, n, false);
 	pthread_mutex_unlock(&g_mutex);
 	return (ret);
 }
 
-void	*bzero_opti(void *s, size_t n)
+void			*reallocf(void *ptr, size_t n)
+{
+	void *ret;
+
+	pthread_mutex_lock(&g_mutex);
+	ret = launch_realloc(ptr, n, true);
+	pthread_mutex_unlock(&g_mutex);
+	return (ret);
+}
+
+void			*bzero_opti(void *s, size_t n)
 {
 	size_t i;
 	size_t z;
@@ -73,7 +84,7 @@ void	*bzero_opti(void *s, size_t n)
 	return (s);
 }
 
-void	*calloc(size_t nitems, size_t size)
+void			*calloc(size_t nitems, size_t size)
 {
 	void *ret;
 
@@ -91,13 +102,4 @@ void	*calloc(size_t nitems, size_t size)
 	bzero_opti(ret, nitems * size);
 	pthread_mutex_unlock(&g_mutex);
 	return (ret);
-}
-
-size_t	malloc_usable_size(void *ptr)
-{
-	t_mem *mem;
-
-	if (!(mem = find_ptr(ptr)))
-		return (0);
-	return (mem->size);
 }

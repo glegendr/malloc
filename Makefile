@@ -1,6 +1,4 @@
-.PHONY: all re fclean clean
-HOSTTYPE=x86_64_Darwin
-ifeq ($(HOSTTYPE),)
+ifeq ($(HOSTTYPE), )
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 NAME= libft_malloc_$(HOSTTYPE).so
@@ -60,3 +58,5 @@ fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
+
+.PHONY: all re fclean clean
