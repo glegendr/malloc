@@ -6,13 +6,12 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:09:36 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/23 18:55:18 by glegendr         ###   ########.fr       */
+/*   Updated: 2020/01/07 14:46:59 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <malloc.h>
 #include <libft.h>
-#define MEM_LENGTH(mem) while(mem) {mem = mem->next; ++y;}
 
 static bool		all_freed(t_head *head)
 {
@@ -28,13 +27,14 @@ static bool		all_freed(t_head *head)
 	return (true);
 }
 
-static char		*str_my_type(t_type type)
+static void		print_mem(t_mem *mem)
 {
-	if (type == LARGE)
-		return ("LARGE");
-	if (type == SMALL)
-		return ("SMALL");
-	return ("TINY");
+	ft_putpoint(mem->ptr);
+	ft_putstr(" - ");
+	ft_putpoint(mem->ptr + mem->size);
+	ft_putstr(" : ");
+	ft_putnbr(mem->size);
+	ft_putstr(" octets\n");
 }
 
 static int		loop2(t_mem *mem, t_head *tmp, int total_size, int y)
@@ -42,7 +42,11 @@ static int		loop2(t_mem *mem, t_head *tmp, int total_size, int y)
 	int z;
 
 	z = 0;
-	MEM_LENGTH(mem);
+	while (mem)
+	{
+		mem = mem->next;
+		++y;
+	}
 	while (y > 0)
 	{
 		z = 0;
@@ -51,12 +55,7 @@ static int		loop2(t_mem *mem, t_head *tmp, int total_size, int y)
 			mem = mem->next;
 		if (mem->status == USED)
 		{
-			ft_putpoint(mem->ptr);
-			ft_putstr(" - ");
-			ft_putpoint(mem->ptr + mem->size);
-			ft_putstr(" : ");
-			ft_putnbr(mem->size);
-			ft_putstr(" octets\n");
+			print_mem(mem);
 			total_size += mem->size;
 		}
 		mem = mem->next;

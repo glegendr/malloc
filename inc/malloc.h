@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:19:20 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/25 14:57:10 by glegendr         ###   ########.fr       */
+/*   Updated: 2020/01/07 14:50:06 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@
 # include <pthread.h>
 
 # define TINY_PAGE_SIZE		4096
-# define TINY_SIZE			TINY_PAGE_SIZE / 100
-# define SMALL_PAGE_SIZE		TINY_PAGE_SIZE * 25
-# define SMALL_SIZE			SMALL_PAGE_SIZE / 100
+# define TINY_SIZE			40
+# define SMALL_PAGE_SIZE		102400
+# define SMALL_SIZE			1024
 # define STATUS				int
 # define FREED				0
 # define USED				1
@@ -78,4 +78,5 @@ void				show_alloc_mem(void);
 t_mem				*find_ptr(void *ptr);
 t_mem				*is_free_space(t_head *head, size_t size);
 size_t				find_my_type(size_t size);
+char				*str_my_type(t_type type);
 #endif

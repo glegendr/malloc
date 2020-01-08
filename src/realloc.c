@@ -6,7 +6,7 @@
 /*   By: glegendr <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/22 18:10:14 by glegendr          #+#    #+#             */
-/*   Updated: 2019/09/25 17:33:30 by glegendr         ###   ########.fr       */
+/*   Updated: 2020/01/07 14:47:08 by glegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,46 +60,11 @@ void			*reallocf(void *ptr, size_t n)
 	return (ret);
 }
 
-void			*bzero_opti(void *s, size_t n)
+char			*str_my_type(t_type type)
 {
-	size_t i;
-	size_t z;
-
-	i = 0;
-	z = n / 8;
-	while (i < z)
-	{
-		if (((uint64_t *)s)[i] != 0)
-			((uint64_t *)s)[i] = 0;
-		++i;
-	}
-	z = 0;
-	n %= 8;
-	while (z < n)
-	{
-		if (((uint8_t *)s)[z + 8 * i] != 0)
-			((uint8_t *)s)[z + 8 * i] = 0;
-		++z;
-	}
-	return (s);
-}
-
-void			*calloc(size_t nitems, size_t size)
-{
-	void *ret;
-
-	pthread_mutex_lock(&g_mutex);
-	if (!nitems || !size)
-	{
-		pthread_mutex_unlock(&g_mutex);
-		return (NULL);
-	}
-	if (!(ret = malloc(nitems * size)))
-	{
-		pthread_mutex_unlock(&g_mutex);
-		return (NULL);
-	}
-	bzero_opti(ret, nitems * size);
-	pthread_mutex_unlock(&g_mutex);
-	return (ret);
+	if (type == LARGE)
+		return ("LARGE");
+	if (type == SMALL)
+		return ("SMALL");
+	return ("TINY");
 }

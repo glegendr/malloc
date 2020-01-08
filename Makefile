@@ -10,6 +10,7 @@ CFLAG+= -Wall
 #CFLAG+= -fsanitize=address
 SRCNAME= free			\
 		 malloc			\
+		 calloc			\
 		 realloc		\
 		 utils			\
 		 show_alloc_mem	\
